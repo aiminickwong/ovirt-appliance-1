@@ -11,7 +11,6 @@ text
 url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
-repo --name="ovirt3.5" --baseurl=http://192.168.2.194/ovirt3.5/
 
 # System language
 lang en_US.UTF-8
@@ -19,8 +18,8 @@ lang en_US.UTF-8
 # keyboard layouts
 keyboard us
 
-# Shutdown after installation
-shutdown
+# Poweroff after installation
+poweroff
 
 # Network information
 #network --onboot yes --device eth0 --bootproto dhcp --noipv6
@@ -49,7 +48,7 @@ services --disabled="cloud-init"
 
 # System bootloader configuration
 #bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
-bootloader --location=mbr --timeout=1
+bootloader --location=mbr --timeout=1 --append="console=tty1 linux edd=off"
 
 # The following is the partition information you requested
 # Note that any partitions you deleted are not expressed
@@ -87,6 +86,26 @@ tar
 #dracut-config-generic
 #initial-setup
 #kernel-core
+
+%post --erroronfail
+
+# Create grub.conf for EC2. This used to be done by appliance creator but
+# anaconda doesn't do it. And, in case appliance-creator is used, we're
+# overriding it here so that both cases get the exact same file.
+# Note that the console line is different -- that's because EC2 provides
+# different virtual hardware, and this is a convenient way to act differently
+echo -n "Creating grub.conf for pvgrub"
+rootuuid=$( awk '$2=="/" { print $1 };'  /etc/fstab )
+mkdir /boot/grub
+echo -e 'default=0\ntimeout=0\n\n' > /boot/grub/grub.conf
+for kv in $( ls -1v /boot/vmlinuz* |grep -v rescue |sed s/.*vmlinuz-//  ); do
+  echo "title EayunOS 4.1 ($kv)" >> /boot/grub/grub.conf
+  echo -e "\troot (hd0,0)" >> /boot/grub/grub.conf
+  echo -e "\tkernel /boot/vmlinuz-$kv ro root=$rootuuid no_timer_check console=tty1 LANG=en_US.UTF-8" >> /boot/grub/grub.conf
+  echo -e "\tinitrd /boot/initramfs-$kv.img" >> /boot/grub/grub.conf
+  echo
+done
+%end
 
 %post --erroronfail
 # older versions of livecd-tools do not follow "rootpw --lock" line above
@@ -150,11 +169,6 @@ mkdir -p /var/cache/yum
 /sbin/fixfiles -R -a restore
 #chattr +i /boot/extlinux/ldlinux.sys
 
-#echo "Zeroing out empty space."
-# This forces the filesystem to reclaim space from deleted files
-#dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
-#rm -f /var/tmp/zeros
-#echo "(Don't worry -- that out-of-space error was expected.)"
 
 %end
 
@@ -171,8 +185,8 @@ echo "Nothing to do"
 echo "Pre-Installing oVirt stuff"
 #
 ##yum install -y http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
-# Ucomment if not use local ovirt3.5 repository
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
+rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
 yum install -y ovirt-engine ovirt-guest-agent
 
 #
@@ -191,7 +205,7 @@ OVESETUP_DB/user=str:engine
 OVESETUP_DB/port=int:5432
 OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
 OVESETUP_CONFIG/applicationMode=str:virt
-OVESETUP_CONFIG/firewallManager=str:firewalld
+OVESETUP_CONFIG/firewallManager=str:iptables
 OVESETUP_CONFIG/websocketProxyConfig=none:True
 OVESETUP_CONFIG/storageType=str:nfs
 OVESETUP_PROVISIONING/postgresProvisioningEnabled=bool:True
@@ -212,4 +226,27 @@ passwd --delete root
 passwd --expire root
 %end
 
+#%post --erroronfail
+#
+#echo "Zeroing out empty space."
+#
+# This forces the filesystem to reclaim space from deleted files
+#dd bs=1M if=/dev/zero of=/var/tmp/zeros || :
+#rm -f /var/tmp/zeros
+#echo "(Don't worry -- that out-of-space error was expected.)"
 
+#%end
+
+%post --erroronfail
+#
+#echo "Clear repo directory"
+#
+rm -rf /etc/yum.repos.d/*
+%end
+
+%post --erroronfail
+#
+#echo "Empty resolv.conf contents"
+#
+echo "" > /etc/resolv.conf
+%end

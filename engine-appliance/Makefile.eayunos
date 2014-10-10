@@ -13,7 +13,7 @@ VM_CPUS ?= 4
 VM_RAM ?= 4096
 VM_DISK ?= 8000
 
-OVA_RAM ?= 16384
+OVA_RAM ?= 4096
 OVA_CPUS ?= $(VM_CPUS)
 
 ARCH := x86_64
@@ -22,12 +22,23 @@ RELEASEVER := 6.5
 PYTHON ?= PYTHONPATH="$(PWD)/imagefactory/" python
 CURL ?= curl
 
+BRAND := EayunOS
+BRVERSION := 4.1
+BRARCH := x86_64
+DATE := $(shell date +%y%m%d%H%M)
+STATE := Beta
+OVANAME := oVirt-Engine-Appliance-$(BRAND)-$(BRVERSION)-$(BRARCH)-$(STATE)-$(DATE)
+
 .SECONDARY:
 .PHONY:$(MAIN_NAME).ks.tpl
 .INTERMEDIATE: hda.qcow2
 
+#all: $(MAIN_NAME).ova
+#	echo "$(MAIN_NAME)" appliance done
 all: $(MAIN_NAME).ova
-	echo "$(MAIN_NAME)" appliance done
+	#Rename for the ova file
+	mv $(MAIN_NAME).ova $(OVANAME).ova
+	echo "$(OVANAME)" appliance done
 
 %.ks: %.ks.tpl
 	ksflatten $< > $@
@@ -38,8 +49,8 @@ all: $(MAIN_NAME).ova
 		-e "s/^network .*/network --activate/" \
 		-e "s/^%packages.*/%packages --ignoremissing/" \
 		-e "/RUN_FIRSTBOOT/ s/^/#/" \
-		-e "/^bootloader/ s/bootloader .*/bootloader --location=mbr --timeout=1/" \
 		-e "/^reboot/ s/reboot/poweroff/" \
+		-e "/^shutdown/ s/shutdown/poweroff/" \
 		$@
 
 

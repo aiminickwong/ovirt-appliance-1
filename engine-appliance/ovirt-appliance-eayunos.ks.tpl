@@ -11,6 +11,7 @@ text
 url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
+repo --name="eayunos" --baseurl=http://192.168.2.194/eayunos
 
 # System language
 lang en_US.UTF-8
@@ -188,33 +189,54 @@ echo "Pre-Installing oVirt stuff"
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
 yum install -y ovirt-engine ovirt-guest-agent
+yum install -y eayunos-engine-console
 
 #
 echo "Creating a partial answer file"
 #
-cat > /root/ovirt-engine-answers <<__EOF__
+ENGINEADMINPW=`cat /dev/urandom | sed 's/[^a-zA-Z0-9!@#$%^&*()_+]//g' | strings -n 10 | head -n 1`
+mkdir /.eayunos
+echo $ENGINEADMINPW > /.eayunos/engineadminpw
+cat > /root/eayunos-engine-answers <<__EOF__
 [environment:default]
-OVESETUP_CORE/engineStop=none:None
 OVESETUP_DIALOG/confirmSettings=bool:True
+OVESETUP_CONFIG/applicationMode=str:virt
+OVESETUP_CONFIG/remoteEngineSetupStyle=none:None
+OVESETUP_CONFIG/adminPassword=str:$ENGINEADMINPW
+OVESETUP_CONFIG/storageIsLocal=bool:False
+OVESETUP_CONFIG/firewallManager=str:iptables
+OVESETUP_CONFIG/remoteEngineHostRootPassword=none:None
+OVESETUP_CONFIG/updateFirewall=bool:True
+OVESETUP_CONFIG/remoteEngineHostSshPort=none:None
+OVESETUP_CONFIG/fqdn=str:localhost.localdomain
+OVESETUP_CONFIG/storageType=none:None
+OSETUP_RPMDISTRO/requireRollback=none:None
+OSETUP_RPMDISTRO/enableUpgrade=none:None
 OVESETUP_DB/database=str:engine
 OVESETUP_DB/fixDbViolations=none:None
 OVESETUP_DB/secured=bool:False
-OVESETUP_DB/securedHostValidation=bool:False
 OVESETUP_DB/host=str:localhost
 OVESETUP_DB/user=str:engine
+OVESETUP_DB/securedHostValidation=bool:False
 OVESETUP_DB/port=int:5432
+OVESETUP_ENGINE_CORE/enable=bool:True
+OVESETUP_CORE/engineStop=none:None
+OVESETUP_SYSTEM/memCheckEnabled=bool:True
 OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
-OVESETUP_CONFIG/applicationMode=str:virt
-OVESETUP_CONFIG/firewallManager=str:iptables
-OVESETUP_CONFIG/websocketProxyConfig=none:True
-OVESETUP_CONFIG/storageType=str:nfs
+OVESETUP_PKI/organization=str:localdomain
+OVESETUP_CONFIG/isoDomainMountPoint=none:None
+OVESETUP_CONFIG/isoDomainName=none:None
+OVESETUP_CONFIG/isoDomainACL=none:None
+OVESETUP_AIO/configure=none:None
+OVESETUP_AIO/storageDomainName=none:None
+OVESETUP_AIO/storageDomainDir=none:None
 OVESETUP_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_APACHE/configureRootRedirection=bool:True
 OVESETUP_APACHE/configureSsl=bool:True
-OSETUP_RPMDISTRO/requireRollback=none:None
-OSETUP_RPMDISTRO/enableUpgrade=none:None
+OVESETUP_CONFIG/websocketProxyConfig=bool:True
 __EOF__
 
+engine-setup --config-append=/root/eayunos-engine-answers --offline
 %end
 
 %post --erroronfail

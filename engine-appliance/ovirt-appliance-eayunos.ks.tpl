@@ -11,7 +11,6 @@ text
 url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
-repo --name="eayunos" --baseurl=http://192.168.2.194/eayunos
 
 # System language
 lang en_US.UTF-8
@@ -36,7 +35,7 @@ firewall --disabled
 authconfig --enableshadow --passalgo=sha512
 
 # SELinux configuration
-selinux --permissive
+#selinux --permissive
 
 # System timezone
 timezone Asia/Shanghai
@@ -192,12 +191,14 @@ yum install -y ovirt-engine ovirt-guest-agent
 yum install -y eayunos-engine-console
 
 #
-echo "Creating a partial answer file"
+echo "Generate a random password"
 #
-ENGINEADMINPW=`cat /dev/urandom | sed 's/[^a-zA-Z0-9!@#$%^&*()_+]//g' | strings -n 10 | head -n 1`
+ENGINEADMINPW=`dd if=/dev/urandom bs=512 count=1 2> /dev/null | tr -cd '[:alnum:]' | fold -w10 | head -n1`
 mkdir /.eayunos
 echo $ENGINEADMINPW > /.eayunos/engineadminpw
+echo "Creating a partial answer file"
 cat > /root/eayunos-engine-answers <<__EOF__
+# action=setup
 [environment:default]
 OVESETUP_DIALOG/confirmSettings=bool:True
 OVESETUP_CONFIG/applicationMode=str:virt
@@ -206,7 +207,7 @@ OVESETUP_CONFIG/adminPassword=str:$ENGINEADMINPW
 OVESETUP_CONFIG/storageIsLocal=bool:False
 OVESETUP_CONFIG/firewallManager=str:iptables
 OVESETUP_CONFIG/remoteEngineHostRootPassword=none:None
-OVESETUP_CONFIG/updateFirewall=bool:True
+OVESETUP_CONFIG/updateFirewall=bool:False
 OVESETUP_CONFIG/remoteEngineHostSshPort=none:None
 OVESETUP_CONFIG/fqdn=str:localhost.localdomain
 OVESETUP_CONFIG/storageType=none:None
@@ -221,7 +222,7 @@ OVESETUP_DB/securedHostValidation=bool:False
 OVESETUP_DB/port=int:5432
 OVESETUP_ENGINE_CORE/enable=bool:True
 OVESETUP_CORE/engineStop=none:None
-OVESETUP_SYSTEM/memCheckEnabled=bool:True
+OVESETUP_SYSTEM/memCheckEnabled=bool:False
 OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
 OVESETUP_PKI/organization=str:localdomain
 OVESETUP_CONFIG/isoDomainMountPoint=none:None
@@ -236,7 +237,14 @@ OVESETUP_APACHE/configureSsl=bool:True
 OVESETUP_CONFIG/websocketProxyConfig=bool:True
 __EOF__
 
+#fix pki-pkcs12-extract.sh script
+echo "fix pki-pkcs12-extract.sh script"
+sed -i "s/key=\/dev\/fd\/1/key=\/proc\/self\/fd\/1/g" /usr/share/ovirt-engine/bin/pki-pkcs12-extract.sh
+sed -i "s/cert=\/dev\/fd\/1/cert=\/proc\/self\/fd\/1/g" /usr/share/ovirt-engine/bin/pki-pkcs12-extract.sh
+
+echo "Deploy engine"
 engine-setup --config-append=/root/eayunos-engine-answers --offline
+
 %end
 
 %post --erroronfail
@@ -271,4 +279,24 @@ rm -rf /etc/yum.repos.d/*
 #echo "Empty resolv.conf contents"
 #
 echo "" > /etc/resolv.conf
+%end
+
+%post --erroronfail
+#
+#Modify /etc/issue
+#
+echo "Modify /etc/issue"
+cat > /etc/issue <<EOF
+EayunOS Engine Appliance release 4.1.0
+Kernel \r on an \m
+
+Please login as 'engineadm' to configure the appliance
+EOF
+%end
+
+%post --erroronfail
+#
+#permit sshd password authentication
+#
+sed -i "s/^PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 %end

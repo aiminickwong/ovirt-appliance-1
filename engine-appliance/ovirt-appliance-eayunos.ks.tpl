@@ -11,6 +11,9 @@ text
 url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
+repo --name="ovirt239" --baseurl=http://192.168.3.239/mirrors/oVirt/3.5/el6/
+repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=10
+repo --name="eayundm" --baseurl=http://192.168.2.194/repo/eayun-sm/ --cost=10
 
 # System language
 lang en_US.UTF-8
@@ -44,7 +47,7 @@ timezone Asia/Shanghai
 # System services（need to verify）
 #services --enabled="network,sshd,rsyslog,cloud-init,cloud-init-local,cloud-config,cloud-final"
 services --enabled="network,sshd,rsyslog"
-services --disabled="cloud-init"
+services --disabled="cloud-init,cloud-init-local,cloud-config,cloud-final"
 
 # System bootloader configuration
 #bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
@@ -80,6 +83,11 @@ heat-cfntools
 rsync
 syslinux-extlinux
 tar
+ovirt-engine
+ovirt-guest-agent
+ovirt-guest-tools
+subscription-manager
+simple.ovirt.brand
 %end
 
 # Centos6 & EPEL6 does not have these packages
@@ -187,8 +195,8 @@ echo "Pre-Installing oVirt stuff"
 ##yum install -y http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
-yum install -y ovirt-engine ovirt-guest-agent
-yum install -y eayunos-engine-console
+#yum install -y ovirt-engine ovirt-guest-agent ovirt-guest-tools
+yum install -y eayunos-engine-console patternfly1
 
 #
 echo "Generate a random password"
@@ -223,11 +231,11 @@ OVESETUP_DB/port=int:5432
 OVESETUP_ENGINE_CORE/enable=bool:True
 OVESETUP_CORE/engineStop=none:None
 OVESETUP_SYSTEM/memCheckEnabled=bool:False
-OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
+OVESETUP_SYSTEM/nfsConfigEnabled=bool:True
 OVESETUP_PKI/organization=str:localdomain
-OVESETUP_CONFIG/isoDomainMountPoint=none:None
-OVESETUP_CONFIG/isoDomainName=none:None
-OVESETUP_CONFIG/isoDomainACL=none:None
+OVESETUP_CONFIG/isoDomainMountPoint=str:/var/lib/exports/iso
+OVESETUP_CONFIG/isoDomainName=str:WGT_DOMAIN
+OVESETUP_CONFIG/isoDomainACL=str:*(rw)
 OVESETUP_AIO/configure=none:None
 OVESETUP_AIO/storageDomainName=none:None
 OVESETUP_AIO/storageDomainDir=none:None
@@ -244,6 +252,14 @@ sed -i "s/cert=\/dev\/fd\/1/cert=\/proc\/self\/fd\/1/g" /usr/share/ovirt-engine/
 
 echo "Deploy engine"
 engine-setup --config-append=/root/eayunos-engine-answers --offline
+
+#auto init WGT_DOMAIN isodomain
+ISOPATH=`find /var/lib/exports/iso -name 11111111-1111-1111-1111-111111111111`
+ln /usr/share/ovirt-guest-tools/ovirt-guest-tools-*.iso $ISOPATH/WGT-3.5_5.iso
+
+#ovirt-engine-rename workaround
+sed -i '164,184s/^/#&/g'  /usr/share/ovirt-engine/setup/bin/../plugins/ovirt-engine-rename/ovirt-engine/database.py
+sed -i '164i\\tpass' /usr/share/ovirt-engine/setup/bin/../plugins/ovirt-engine-rename/ovirt-engine/database.py
 
 %end
 

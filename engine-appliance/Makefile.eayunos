@@ -27,7 +27,8 @@ BRVERSION := 4.1
 BRARCH := x86_64
 DATE := $(shell date +%y%m%d%H%M)
 STATE := Beta
-OVANAME := oVirt-Engine-Appliance-$(BRAND)-$(BRVERSION)-$(BRARCH)-$(STATE)-$(DATE)
+#OVANAME := oVirt-Engine-Appliance-$(BRAND)-$(BRVERSION)-$(BRARCH)-$(STATE)-$(DATE)
+OVANAME := $(BRAND)-Engine-Appliance-$(BRVERSION)-$(STATE)-$(DATE)
 
 .SECONDARY:
 .PHONY:$(MAIN_NAME).ks.tpl
@@ -37,7 +38,8 @@ OVANAME := oVirt-Engine-Appliance-$(BRAND)-$(BRVERSION)-$(BRARCH)-$(STATE)-$(DAT
 #	echo "$(MAIN_NAME)" appliance done
 all: $(MAIN_NAME).ova
 	#Rename for the ova file
-	mv $(MAIN_NAME).ova $(OVANAME).ova
+	mv $(MAIN_NAME).ova $(OVANAME).ova.gz
+	md5sum $(OVANAME).ova.gz > $(OVANAME).ova.gz.md5
 	echo "$(OVANAME)" appliance done
 
 %.ks: %.ks.tpl
@@ -61,7 +63,9 @@ all: $(MAIN_NAME).ova
 		QEMU_APPEND="cmdline $(QEMU_APPEND)" \
 		DISK_SIZE=$$(( $(VM_DISK) / 1000 ))G \
 		run-install
+#Modify for ovirt-node(base centos 6.5,qemu-img do not support qcow2 version 3)
 	qemu-img convert -O qcow2 hda.qcow2 "$@"
+#	qemu-img convert -o compat=0.10 -O qcow2 hda.qcow2 "$@"
 	rm -f hda.qcow2
 
 #

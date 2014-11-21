@@ -11,8 +11,9 @@ text
 url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
-repo --name="ovirt239" --baseurl=http://192.168.3.239/mirrors/oVirt/3.5/el6/
-repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=10
+#repo --name="ovirt239" --baseurl=http://192.168.3.239/mirrors/oVirt/3.5/el6/
+repo --name="ovirt239" --baseurl=http://192.168.3.239/CI-Repos/EayunOS-4.1-testing/x86_64/ --cost=10
+repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=50
 repo --name="eayundm" --baseurl=http://192.168.2.194/repo/eayun-sm/ --cost=10
 
 # System language
@@ -48,6 +49,7 @@ timezone Asia/Shanghai
 #services --enabled="network,sshd,rsyslog,cloud-init,cloud-init-local,cloud-config,cloud-final"
 services --enabled="network,sshd,rsyslog"
 services --disabled="cloud-init,cloud-init-local,cloud-config,cloud-final"
+services --enabled="oeja-standalone"
 
 # System bootloader configuration
 #bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
@@ -88,6 +90,16 @@ ovirt-guest-agent
 ovirt-guest-tools
 subscription-manager
 simple.ovirt.brand
+UIPlugin-Engine-Manage-Domains
+ovirt-engine-reports
+ovirt-engine-reports-setup
+ovirt-engine-dwh
+ovirt-engine-dwh-setup
+Engine-Vm-Backup
+ovirt-optimizer
+ovirt-optimizer-dependencies
+ovirt-optimizer-jboss7
+ovirt-optimizer-ui
 %end
 
 # Centos6 & EPEL6 does not have these packages

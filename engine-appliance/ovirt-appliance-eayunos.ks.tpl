@@ -12,9 +12,9 @@ url --url=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/
 repo --name="CentOS"  --baseurl=http://192.168.3.239/mirrors/CentOS/6.5/os/x86_64/ --cost=100
 repo --name="EPEL6" --baseurl=http://192.168.3.239/mirrors/epel/6/x86_64/
 #repo --name="ovirt239" --baseurl=http://192.168.3.239/mirrors/oVirt/3.5/el6/
-repo --name="ovirt239-mirros" --baseurl=http://192.168.3.239:11080/pulp/repos/ovirt/3.5/EL6/ --cost=10
+repo --name="ovirt239-mirros" --baseurl=http://192.168.3.239:11080/pulp/repos/ovirt/3.5/EL6/ --cost=50
 repo --name="ovirt239" --baseurl=http://192.168.3.239/CI-Repos/EayunOS-4.1-testing/x86_64/ --cost=10
-repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=50
+repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=10
 repo --name="eayundm" --baseurl=http://192.168.2.194/repo/eayun-sm/ --cost=10
 
 # System language
@@ -50,7 +50,6 @@ timezone Asia/Shanghai
 #services --enabled="network,sshd,rsyslog,cloud-init,cloud-init-local,cloud-config,cloud-final"
 services --enabled="network,sshd,rsyslog"
 services --disabled="cloud-init,cloud-init-local,cloud-config,cloud-final"
-services --enabled="oeja-standalone"
 
 # System bootloader configuration
 #bootloader --location=mbr --driveorder=sda --append="crashkernel=auto rhgb quiet"
@@ -101,6 +100,7 @@ ovirt-optimizer
 ovirt-optimizer-dependencies
 ovirt-optimizer-jboss7
 ovirt-optimizer-ui
+patternfly1
 %end
 
 # Centos6 & EPEL6 does not have these packages
@@ -209,7 +209,7 @@ echo "Pre-Installing oVirt stuff"
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
 #yum install -y ovirt-engine ovirt-guest-agent ovirt-guest-tools
-yum install -y eayunos-engine-console patternfly1
+yum install -y eayunos-engine-console
 
 #
 echo "Generate a random password"
@@ -256,6 +256,27 @@ OVESETUP_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_APACHE/configureRootRedirection=bool:True
 OVESETUP_APACHE/configureSsl=bool:True
 OVESETUP_CONFIG/websocketProxyConfig=bool:True
+OVESETUP_DWH_CORE/enable=bool:True
+OVESETUP_DWH_DB/database=str:ovirt_engine_history
+OVESETUP_DWH_DB/secured=bool:False
+OVESETUP_DWH_DB/host=str:localhost
+OVESETUP_DWH_DB/disconnectExistingDwh=none:None
+OVESETUP_DWH_DB/restoreBackupLate=bool:True
+OVESETUP_DWH_DB/user=str:ovirt_engine_history
+OVESETUP_DWH_DB/securedHostValidation=bool:False
+OVESETUP_DWH_DB/performBackup=none:None
+OVESETUP_DWH_DB/password=str:history
+OVESETUP_DWH_DB/port=str:5432
+OVESETUP_DWH_PROVISIONING/postgresProvisioningEnabled=bool:True
+OVESETUP_REPORTS_CORE/enable=bool:True
+OVESETUP_REPORTS_CONFIG/adminPassword=str:$ENGINEADMINPW
+OVESETUP_REPORTS_DB/database=str:ovirt_engine_reports
+OVESETUP_REPORTS_DB/secured=bool:False
+OVESETUP_REPORTS_DB/host=str:localhost
+OVESETUP_REPORTS_DB/user=str:ovirt_engine_reports
+OVESETUP_REPORTS_DB/securedHostValidation=bool:False
+OVESETUP_REPORTS_DB/port=str:5432
+OVESETUP_REPORTS_PROVISIONING/postgresProvisioningEnabled=bool:True
 __EOF__
 
 #fix pki-pkcs12-extract.sh script

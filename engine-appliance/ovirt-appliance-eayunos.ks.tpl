@@ -95,7 +95,7 @@ ovirt-engine-reports
 ovirt-engine-reports-setup
 ovirt-engine-dwh
 ovirt-engine-dwh-setup
-Engine-Vm-Backup
+engine-vm-backup
 ovirt-optimizer
 ovirt-optimizer-dependencies
 ovirt-optimizer-jboss7

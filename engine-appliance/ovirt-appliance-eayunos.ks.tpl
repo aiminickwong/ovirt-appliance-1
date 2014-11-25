@@ -207,7 +207,7 @@ echo "Pre-Installing oVirt stuff"
 #
 ##yum install -y http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
-#rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
+rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
 #yum install -y ovirt-engine ovirt-guest-agent ovirt-guest-tools
 yum install -y eayunos-engine-console
 

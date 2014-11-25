@@ -100,6 +100,7 @@ ovirt-optimizer-dependencies
 ovirt-optimizer-jboss7
 ovirt-optimizer-ui
 patternfly1
+engine-reports-config-passwd
 %end
 
 # Centos6 & EPEL6 does not have these packages

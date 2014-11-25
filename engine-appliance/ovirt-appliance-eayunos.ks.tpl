@@ -9,9 +9,8 @@ text
 
 # Use network installation
 #url --url=http://192.168.2.194/centos6.5/
-repo --name="CentOS"  --baseurl=http://192.168.2.194/centos6.5/ --cost=100
+repo --name="CentOS"  --baseurl=http://192.168.3.239:11080/pulp/repos/centos/6.5/os/x86_64/
 repo --name="EPEL6" --baseurl=http://192.168.3.239:11080/pulp/repos/epel/6/x86_64/
-#repo --name="ovirt239" --baseurl=http://192.168.3.239/mirrors/oVirt/3.5/el6/
 repo --name="ovirt239-mirros" --baseurl=http://192.168.3.239:11080/pulp/repos/ovirt/3.5/EL6/ --cost=50
 repo --name="ovirt239" --baseurl=http://192.168.3.239/CI-Repos/EayunOS-4.1-testing/x86_64/ --cost=10
 repo --name="ovirt159" --baseurl=http://192.168.3.159/eayunVirt/rpms/EayunOS41Prev/ --cost=10
@@ -207,7 +206,7 @@ echo "Pre-Installing oVirt stuff"
 #
 ##yum install -y http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 #rpm -ivh http://resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
-rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
+#rpm -ivh http://192.168.2.194/ovirt3.5/local-ovirt-1.0-1.el6.x86_64.rpm
 #yum install -y ovirt-engine ovirt-guest-agent ovirt-guest-tools
 yum install -y eayunos-engine-console
 

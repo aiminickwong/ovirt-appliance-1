@@ -12,7 +12,7 @@ MAIN_NAME ?= ovirt-appliance-eayunos
 VM_CPUS ?= 4
 VM_RAM ?= 4096
 #VM_DISK ?= 8000
-VM_DISK ?= 10240
+VM_DISK ?= 10000
 
 #OVA_RAM ?= 4096
 OVA_RAM ?= 16384

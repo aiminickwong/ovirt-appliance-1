@@ -42,7 +42,7 @@ authconfig --enableshadow --passalgo=sha512
 #selinux --permissive
 
 # System timezone
-timezone Asia/Shanghai
+timezone --utc Asia/Shanghai
 
 
 # System services（need to verify）

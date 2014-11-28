@@ -215,8 +215,10 @@ yum install -y eayunos-engine-console
 echo "Generate a random password"
 #
 ENGINEADMINPW=`dd if=/dev/urandom bs=512 count=1 2> /dev/null | tr -cd '[:alnum:]' | fold -w10 | head -n1`
+REPORTSADMINPW=$ENGINEADMINPW
 mkdir /.eayunos
 echo $ENGINEADMINPW > /.eayunos/engineadminpw
+echo $REPORTSADMINPW > /.eayunos/reportsadminpw
 echo "Creating a partial answer file"
 cat > /root/eayunos-engine-answers <<__EOF__
 # action=setup
@@ -269,7 +271,7 @@ OVESETUP_DWH_DB/password=str:history
 OVESETUP_DWH_DB/port=str:5432
 OVESETUP_DWH_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_REPORTS_CORE/enable=bool:True
-OVESETUP_REPORTS_CONFIG/adminPassword=str:$ENGINEADMINPW
+OVESETUP_REPORTS_CONFIG/adminPassword=str:$REPORTSADMINPW
 OVESETUP_REPORTS_DB/database=str:ovirt_engine_reports
 OVESETUP_REPORTS_DB/secured=bool:False
 OVESETUP_REPORTS_DB/host=str:localhost

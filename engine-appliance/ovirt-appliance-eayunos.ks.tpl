@@ -99,6 +99,7 @@ ovirt-optimizer
 ovirt-optimizer-dependencies
 ovirt-optimizer-jboss7
 ovirt-optimizer-ui
+ovirt-optimizer-setup
 patternfly1
 engine-reports-config-passwd
 %end

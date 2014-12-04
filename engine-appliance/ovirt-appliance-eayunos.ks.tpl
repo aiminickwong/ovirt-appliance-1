@@ -102,6 +102,7 @@ ovirt-optimizer-ui
 ovirt-optimizer-setup
 patternfly1
 engine-reports-config-passwd
+wqy-microhei-fonts
 %end
 
 # Centos6 & EPEL6 does not have these packages

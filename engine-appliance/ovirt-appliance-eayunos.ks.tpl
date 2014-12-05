@@ -177,10 +177,10 @@ truncate -c -s 0 /var/log/yum.log
 echo "Import RPM GPG key"
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-6
 
-echo "Packages within this cloud image:"
-echo "-----------------------------------------------------------------------"
-rpm -qa
-echo "-----------------------------------------------------------------------"
+echo "Packages within this cloud image:" | tee /tmp/install.log
+echo "-----------------------------------------------------------------------" | tee /tmp/install.log
+rpm -qa | tee /tmp/install.log
+echo "-----------------------------------------------------------------------" | tee /tmp/install.log
 
 echo "Fixing SELinux contexts."
 touch /var/log/cron
@@ -337,7 +337,7 @@ echo "" > /etc/resolv.conf
 
 %post --erroronfail
 #
-#Modify /etc/issue
+#Modify release infomation
 #
 echo "Modify /etc/issue"
 cat > /etc/issue <<EOF
@@ -345,6 +345,18 @@ EayunOS Engine Appliance release 4.1.0
 Kernel \r on an \m
 
 Please login as 'engineadm' to configure the appliance
+EOF
+
+cat > /etc/eayunos-release <<EOF
+EayunOS Engine Appliance release 4.1.0 (rc1)
+EOF
+
+cat > /etc/redhat-release <<EOF
+EayunOS Engine Appliance release 4.1.0 (rc1)
+EOF
+
+cat > /etc/centos-release <<EOF
+EayunOS Engine Appliance release 4.1.0 (rc1)
 EOF
 %end
 

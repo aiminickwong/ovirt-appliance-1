@@ -366,3 +366,12 @@ EOF
 #
 sed -i "s/^PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 %end
+
+%post --erroronfail
+#
+#Erase installization file & log
+#
+rm -rf /root/anaconda-ks.cfg
+rm -rf /root/eayunos-engine-answers
+rm -rf /tmp/ks-*
+%end

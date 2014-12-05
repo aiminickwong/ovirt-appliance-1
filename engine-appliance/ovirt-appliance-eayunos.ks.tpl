@@ -348,15 +348,15 @@ Please login as 'engineadm' to configure the appliance
 EOF
 
 cat > /etc/eayunos-release <<EOF
-EayunOS Engine Appliance release 4.1.0 (rc1)
+EayunOS Engine Appliance release 4.1.0 (Beta)
 EOF
 
 cat > /etc/redhat-release <<EOF
-EayunOS Engine Appliance release 4.1.0 (rc1)
+EayunOS Engine Appliance release 4.1.0 (Beta)
 EOF
 
 cat > /etc/centos-release <<EOF
-EayunOS Engine Appliance release 4.1.0 (rc1)
+EayunOS Engine Appliance release 4.1.0 (Beta)
 EOF
 %end
 

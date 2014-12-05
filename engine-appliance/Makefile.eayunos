@@ -70,6 +70,10 @@ all: $(MAIN_NAME).ova
 	qemu-img convert -O qcow2 hda.qcow2 "$@"
 #	qemu-img convert -o compat=0.10 -O qcow2 hda.qcow2 "$@"
 	rm -f hda.qcow2
+#Erase installization scripts & log files
+	guestfish -a "$@" -i glob rm-rf /tmp/ks-*
+	guestfish -a "$@" -i glob rm-rf /root/anaconda-ks.cfg
+	guestfish -a "$@" -i glob rm-rf /root/eayunos-engine-answers
 
 #
 # The part below is using LMC, but it's broken in combination with jenkins

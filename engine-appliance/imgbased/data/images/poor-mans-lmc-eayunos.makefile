@@ -8,7 +8,8 @@
 KICKSTART = kickstarts/runtime-layout.ks
 
 DISK_NAME = hda.qcow2
-DISK_SIZE = 10G
+#DISK_SIZE = 10G
+DISK_SIZE = 50G
 
 VM_RAM = 2048
 VM_SMP = 4

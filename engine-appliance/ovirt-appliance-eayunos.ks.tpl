@@ -227,7 +227,7 @@ cat > /root/eayunos-engine-answers <<__EOF__
 # action=setup
 [environment:default]
 OVESETUP_DIALOG/confirmSettings=bool:True
-OVESETUP_CONFIG/applicationMode=str:virt
+OVESETUP_CONFIG/applicationMode=str:both
 OVESETUP_CONFIG/remoteEngineSetupStyle=none:None
 OVESETUP_CONFIG/adminPassword=str:$ENGINEADMINPW
 OVESETUP_CONFIG/storageIsLocal=bool:False

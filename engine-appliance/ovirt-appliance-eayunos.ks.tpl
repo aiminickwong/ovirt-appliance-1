@@ -300,6 +300,11 @@ ln /usr/share/ovirt-guest-tools/ovirt-guest-tools-*.iso $ISOPATH/WGT-3.5_5.iso
 sed -i '164,184s/^/#&/g'  /usr/share/ovirt-engine/setup/bin/../plugins/ovirt-engine-rename/ovirt-engine/database.py
 sed -i '164i\\tpass' /usr/share/ovirt-engine/setup/bin/../plugins/ovirt-engine-rename/ovirt-engine/database.py
 
+#UIPlugin setup
+ovirt-optimizer-setup --password=$ENGINEADMINPW
+vm-backup-setup --password=$ENGINEADMINPW
+engine-manage-domains-setup
+
 %end
 
 %post --erroronfail

@@ -49,7 +49,6 @@ all: $(MAIN_NAME).ova
 %.ks: %.ks.tpl
 	ksflatten $< > $@
 	sed -i \
-		-e "/^[-]/ d" \
 		-e "/^text/ d" \
 		-e "s/^part .*/part \/ --size $(VM_DISK) --fstype ext4 --fsoptions discard/" \
 		-e "s/^network .*/network --activate/" \

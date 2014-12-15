@@ -104,6 +104,7 @@ patternfly1
 engine-reports-config-passwd
 wqy-microhei-fonts
 hostusb-passthrough
+jboss-jackson-bugfix
 %end
 
 # Centos6 & EPEL6 does not have these packages

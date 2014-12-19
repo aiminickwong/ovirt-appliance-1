@@ -89,7 +89,7 @@ ovirt-guest-agent
 ovirt-guest-tools
 subscription-manager
 simple.ovirt.brand
-UIPlugin-Engine-Manage-Domains
+manage-domains-plugin
 ovirt-engine-reports
 ovirt-engine-reports-setup
 ovirt-engine-dwh

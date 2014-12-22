@@ -33,7 +33,7 @@ BRARCH := x86_64
 DATE := $(shell date +%y%m%d%H%M)
 STATE := Beta
 #OVANAME := oVirt-Engine-Appliance-$(BRAND)-$(BRVERSION)-$(BRARCH)-$(STATE)-$(DATE)
-OVANAME := $(BRAND)-Engine-Appliance-$(BRVERSION)-$(STATE)-$(DATE)
+OVANAME := $(BRAND)-Engine-Appliance-$(BRVERSION)-$(DATE)
 
 .SECONDARY:
 .PHONY:$(MAIN_NAME).ks.tpl

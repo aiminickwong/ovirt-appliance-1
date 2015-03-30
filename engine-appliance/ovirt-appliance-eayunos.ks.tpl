@@ -105,6 +105,7 @@ engine-reports-config-passwd
 wqy-microhei-fonts
 hostusb-passthrough
 jboss-jackson-bugfix
+virt-viewer-win
 %end
 
 # Centos6 & EPEL6 does not have these packages

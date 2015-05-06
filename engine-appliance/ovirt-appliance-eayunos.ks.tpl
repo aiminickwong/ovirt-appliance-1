@@ -11,7 +11,7 @@ text
 #url --url=http://192.168.2.194/centos6.5/
 repo --name="CentOS"  --baseurl=http://192.168.3.239:11080/pulp/repos/centos/6.5/os/x86_64/ --cost=10
 repo --name="EPEL6" --baseurl=http://192.168.3.239:11080/pulp/repos/epel/6/x86_64/
-repo --name="ovirt239-mirros" --baseurl=http://192.168.3.239:11080/pulp/repos/ovirt/3.5/EL6/ --cost=50
+repo --name="ovirt239-mirros" --baseurl=http://192.168.3.239:11080/pulp/repos/ovirt/3.5/EL6/ --cost=50 --excludepkgs='ovirt-engine-reports-*,ovirt-optimizer-*'
 repo --name="ovirt239" --baseurl=http://192.168.3.239/CI-Repos/EayunOS-4.1-testing/x86_64/ --cost=10
 repo --name="ovirt247" --baseurl=http://192.168.3.247/eayunVirt/rpms/EayunOS41Prev/ --cost=10
 repo --name="eayundm" --baseurl=http://192.168.2.194/repo/eayun-sm/ --cost=10

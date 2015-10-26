@@ -384,22 +384,22 @@ echo "" > /etc/resolv.conf
 #
 echo "Modify /etc/issue"
 cat > /etc/issue <<EOF
-EayunOS Engine Appliance release 4.1.0
+EayunOS Engine Appliance release 4.1.1
 Kernel \r on an \m
 
 Please login as 'engineadm' to configure the appliance
 EOF
 
 cat > /etc/eayunos-release <<EOF
-EayunOS Engine Appliance release 4.1.0
+EayunOS Engine Appliance release 4.1.1
 EOF
 
 cat > /etc/redhat-release <<EOF
-EayunOS Engine Appliance release 4.1.0
+EayunOS Engine Appliance release 4.1.1
 EOF
 
 cat > /etc/centos-release <<EOF
-EayunOS Engine Appliance release 4.1.0
+EayunOS Engine Appliance release 4.1.1
 EOF
 %end
 

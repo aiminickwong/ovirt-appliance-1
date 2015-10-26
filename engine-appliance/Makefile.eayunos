@@ -56,7 +56,7 @@ all: $(MAIN_NAME).ova
 		-e "/^text/ d" \
 		-e "s/^part .*/part \/ --size $(VM_DISK) --fstype ext4 --fsoptions discard/" \
 		-e "s/^network .*/network --activate/" \
-		-e "s/^%packages.*/%packages --ignoremissing/" \
+		-e "s/^%packages.*/%packages/" \
 		-e "/RUN_FIRSTBOOT/ s/^/#/" \
 		-e "/^reboot/ s/reboot/poweroff/" \
 		-e "/^shutdown/ s/shutdown/poweroff/" \

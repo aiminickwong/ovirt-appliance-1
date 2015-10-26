@@ -74,7 +74,7 @@ clearpart --all
 part / --size 8000 --fstype ext4 --fsoptions discard
 
 
-%packages --ignoremissing
+%packages
 @core
 cloud-init
 cloud-utils-growpart

@@ -87,7 +87,7 @@ tar
 ovirt-engine
 ovirt-guest-agent
 ovirt-guest-tools
-subscription-manager
+# subscription-manager
 simple.ovirt.brand
 manage-domains-plugin
 ovirt-engine-reports

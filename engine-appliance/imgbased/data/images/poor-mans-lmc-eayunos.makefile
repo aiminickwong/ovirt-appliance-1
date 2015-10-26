@@ -14,7 +14,7 @@ DISK_SIZE = 50G
 VM_RAM = 2048
 VM_SMP = 4
 
-QEMU = qemu-kvm
+QEMU = /usr/libexec/qemu-kvm
 QEMU_APPEND =
 CURL = curl -L -O
 

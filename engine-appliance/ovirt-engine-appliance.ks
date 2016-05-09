@@ -23,20 +23,81 @@ initial-setup
 #
 # CentOS repositories
 #
-url --mirrorlist=http://mirrorlist.centos.org/?repo=os&release=$releasever&arch=$basearch
-repo --name=updates --mirrorlist=http://mirrorlist.centos.org/?repo=updates&release=$releasever&arch=$basearch
-repo --name=extra --mirrorlist=http://mirrorlist.centos.org/?repo=extras&release=$releasever&arch=$basearch
+url --url=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/os/x86_64/
+repo --name=updates --baseurl=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/updates/x86_64/
+repo --name=extra --baseurl=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/extras/x86_64/
 
 #
 # Adding upstream oVirt
 #
 %post --erroronfail
 set -x
-yum install -y "http://plain.resources.ovirt.org/pub/ovirt-3.6-pre/rpm/el7/noarch/ovirt-release36-pre.rpm"
 
-# Use baseurl instead of repo to ensure we use the latest rpms
-sed -i "s/^mirrorlist/#mirrorlist/ ; s/^#baseurl/baseurl/" /etc/yum.repos.d/ovirt*.repo
+rm -rfv /etc/yum.repos.d/*
 
+cat > /etc/yum.repos.d/local.repo <<__EOF__
+[centos-7.2.1511-os-x86_64]
+name=Local CentOS 7.2.1511 OS Repo x86_64
+baseurl=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/os/x86_64/
+gpgcheck=0
+enabled=1
+
+[centos-7.2.1511-updates-x86_64]
+name=Local CentOS 7.2.1511 Updates Repo x86_64
+baseurl=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/updates/x86_64/
+gpgcheck=0
+enabled=1
+
+[centos-7.2.1511-extras-x86_64]
+name=Local CentOS 7.2.1511 Extras Repo x86_64
+baseurl=http://192.168.2.65:11080/pulp/repos/centos/7.2.1511/extras/x86_64/
+gpgcheck=0
+enabled=1
+
+[epel-7-x86_64]
+name=Local EPEL 7 Repo x86_64
+baseurl=http://192.168.2.65:11080/pulp/repos/epel/7/x86_64/
+gpgcheck=0
+enabled=1
+
+[glusterfs-latest-el7-noarch]
+name=Local GlusterFS Latest Repo for EL7 noarch
+baseurl=http://192.168.9.60/pulp/repos/gluster-noarch-epel/el7/
+gpgcheck=0
+enabled=1
+
+[glusterfs-latest-el7-x86_64]
+name=Local GlusterFS Latest Repo for EL7 x86_64
+baseurl=http://192.168.9.60/pulp/repos/gluster-epel/el7/
+gpgcheck=0
+enabled=1
+
+[ovirt-36]
+name=ovirt 3.6
+baseurl=http://192.168.9.60/pulp/repos/ovirt-36/el7/
+gpgcheck=0
+enabled=1
+
+[ovirt-36-static]
+name=ovirt 3.6 snapshot static
+baseurl=http://192.168.9.60/pulp/repos/ovirt-36-snap-static/el7/
+gpgcheck=0
+enabled=1
+
+[patternfly]
+name=patternfly1
+baseurl=http://copr-be.cloud.fedoraproject.org/results/patternfly/patternfly1/epel-7-x86_64/
+gpgcheck=0
+enabled=1
+
+[rdo-juno]
+name=rdo juno repo
+baseurl=http://192.168.2.65:11080/pulp/repos/rdo/openstack-juno/epel-7/
+gpgcheck=0
+enabled=1
+__EOF__
+
+yum clean all
 yum install -y ovirt-engine
 
 #
@@ -81,9 +142,10 @@ __EOF__
 #
 # Enable the guest agent
 #
-yum install -y "https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm"
 yum install -y ovirt-guest-agent-common
 systemctl enable ovirt-guest-agent.service
+
+rm -vf /etc/yum.repos.d/local.repo
 
 rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
 %end

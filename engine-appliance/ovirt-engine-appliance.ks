@@ -100,6 +100,7 @@ __EOF__
 
 yum clean all
 yum install -y ovirt-engine
+yum install -y ovirt-engine-dwh
 
 #
 echo "Creating a partial answer file"
@@ -115,6 +116,7 @@ OVESETUP_DB/securedHostValidation=bool:False
 OVESETUP_DB/host=str:localhost
 OVESETUP_DB/user=str:engine
 OVESETUP_DB/port=int:5432
+OVESETUP_DWH_CORE/enable=bool:True
 OVESETUP_ENGINE_CORE/enable=bool:True
 OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
 OVESETUP_SYSTEM/memCheckEnabled=bool:False

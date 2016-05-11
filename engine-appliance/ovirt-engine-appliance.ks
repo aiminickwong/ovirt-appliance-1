@@ -77,6 +77,7 @@ name=ovirt 3.6
 baseurl=http://192.168.9.60/pulp/repos/ovirt-36/el7/
 gpgcheck=0
 enabled=1
+exclude=ovirt-engine ovirt-engine-appliance ovirt-engine-backend ovirt-engine-dbscripts ovirt-engine-extensions-api-impl ovirt-engine-lib ovirt-engine-restapi ovirt-engine-setup* ovirt-engine-tools* ovirt-engine-userportal* ovirt-engine-vmconsole-proxy-helper ovirt-engine-webadmin-portal* ovirt-engine-websocket-proxy
 
 [ovirt-36-static]
 name=ovirt 3.6 snapshot static
@@ -90,9 +91,9 @@ baseurl=http://copr-be.cloud.fedoraproject.org/results/patternfly/patternfly1/ep
 gpgcheck=0
 enabled=1
 
-[rdo-juno]
-name=rdo juno repo
-baseurl=http://192.168.2.65:11080/pulp/repos/rdo/openstack-juno/epel-7/
+[eayunos42]
+name=EayunOS 4.2 repo
+baseurl=http://192.168.2.56/eayunVirt/rpms/EayunOS42/
 gpgcheck=0
 enabled=1
 __EOF__

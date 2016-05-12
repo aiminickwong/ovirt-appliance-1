@@ -105,6 +105,7 @@ yum install -y ovirt-engine-dwh
 #
 echo "Creating a partial answer file"
 #
+DWHPASSWD=`head /dev/urandom | tr -dc A-Za-z0-9 | head -c 22`
 cat > /root/ovirt-engine-answers <<__EOF__
 [environment:default]
 OVESETUP_CORE/engineStop=none:None
@@ -116,7 +117,22 @@ OVESETUP_DB/securedHostValidation=bool:False
 OVESETUP_DB/host=str:localhost
 OVESETUP_DB/user=str:engine
 OVESETUP_DB/port=int:5432
+OVESETUP_DWH_CONFIG/dwhDbBackupDir=str:/var/lib/ovirt-engine-dwh/backups
 OVESETUP_DWH_CORE/enable=bool:True
+OVESETUP_DWH_DB/secured=bool:False
+OVESETUP_DWH_DB/restoreBackupLate=bool:True
+OVESETUP_DWH_DB/disconnectExistingDwh=none:None
+OVESETUP_DWH_DB/host=str:localhost
+OVESETUP_DWH_DB/user=str:ovirt_engine_history
+OVESETUP_DWH_DB/password=str:$DWHPASSWD
+OVESETUP_DWH_DB/dumper=str:pg_custom
+OVESETUP_DWH_DB/database=str:ovirt_engine_history
+OVESETUP_DWH_DB/performBackup=none:None
+OVESETUP_DWH_DB/port=int:5432
+OVESETUP_DWH_DB/filter=none:None
+OVESETUP_DWH_DB/restoreJobs=int:2
+OVESETUP_DWH_DB/securedHostValidation=bool:False
+OVESETUP_DWH_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_ENGINE_CORE/enable=bool:True
 OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
 OVESETUP_SYSTEM/memCheckEnabled=bool:False

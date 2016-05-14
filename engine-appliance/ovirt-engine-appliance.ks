@@ -102,6 +102,7 @@ yum clean all
 yum install -y ovirt-engine
 yum install -y ovirt-engine-dwh
 yum install -y ovirt-engine-webadmin-reports
+yum install -y ovirt-imageio-common ovirt-imageio-proxy
 
 #
 echo "Creating a partial answer file"

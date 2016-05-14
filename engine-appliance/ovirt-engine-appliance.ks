@@ -101,6 +101,7 @@ __EOF__
 yum clean all
 yum install -y ovirt-engine
 yum install -y ovirt-engine-dwh
+yum install -y ovirt-engine-webadmin-reports
 
 #
 echo "Creating a partial answer file"

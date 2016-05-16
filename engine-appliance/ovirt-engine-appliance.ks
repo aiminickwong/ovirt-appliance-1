@@ -105,6 +105,7 @@ yum install -y ovirt-engine-webadmin-reports
 yum install -y ovirt-imageio-common ovirt-imageio-proxy
 yum install -y manage-domains-plugin
 yum install -y engine-vm-backup
+yum install -y iso-uploader-plugin
 
 #
 echo "Creating a partial answer file"

@@ -1,6 +1,6 @@
 <template>
- <name>kilo_neutron</name>
- <description>neutron kilo</description>
+ <name>neutron_juno</name>
+ <description>neutron juno</description>
  <os>
   <name>RHEL-7</name>
   <version>1</version>
@@ -13,28 +13,20 @@
  </os>
 
  <repositories>
-   <repository name='centos-7.1.1503-os-x86_64'>
-     <url>http://192.168.2.65:11080/pulp/repos/centos/7.1.1503/os/x86_64</url>
+   <repository name='base-os-1503'>
+     <url>http://192.168.2.65:11080/pulp/repos/centos/7.1.1503/os/x86_64/</url>
      <signed>no</signed>
    </repository>
-   <repository name='centos-7.1.1503-updates-x86_64'>
-     <url>http://192.168.2.65:11080/pulp/repos/centos/7.1.1503/updates/x86_64</url>
+   <repository name='eayunstack-base'>
+     <url>http://192.168.2.65/testing/EayunStack/yum-repos/1.0-base/os/x86_64/</url>
      <signed>no</signed>
    </repository>
-   <repository name='centos-7.1.1503-extras-x86_64'>
-     <url>http://192.168.2.65:11080/pulp/repos/centos/7.1.1503/extras/x86_64</url>
+   <repository name='eayunstack-1.1'>
+     <url>http://192.168.2.65/CI-Repos/EayunStack-1.1-release/x86_64/</url>
      <signed>no</signed>
    </repository>
-   <repository name='rdo-juno'>
-     <url>http://192.168.2.65:11080/pulp/repos/rdo/openstack-juno/epel-7</url>
-     <signed>no</signed>
-   </repository>
-   <repository name='eayunstack-1.1-release'>
-     <url>http://192.168.2.65/CI-Repos/EayunStack-1.1-release/x86_64</url>
-     <signed>no</signed>
-   </repository>
-   <repository name='epel-7-repo'>
-     <url>http://192.168.2.65:11080/pulp/repos/epel/7/x86_64</url>
+   <repository name='eayunos-4.2'>
+     <url>http://192.168.2.56/eayunVirt/rpms/EayunOS42/</url>
      <signed>no</signed>
    </repository>
  </repositories>
@@ -49,6 +41,7 @@ rm -rfv /etc/yum.repos.d/CentOS*
    </command>
 
    <command name='install-openstack'>
+yum install -y iptables-services
 yum install -y openstack-packstack
 
 PACKSTACK_ANSWER_FILE=/root/packstack-answers.txt
@@ -96,7 +89,8 @@ packstack --answer-file=$PACKSTACK_ANSWER_FILE
    </command>
 
    <command name='install-additional-packages'>
-yum install -y cloud-init ovirt-guest-agent tcpdump vim-enhanced NetworkManager-config-server
+rm -rfv /etc/yum.repos.d/CentOS*
+yum install -y cloud-init ovirt-guest-agent-common tcpdump vim-enhanced NetworkManager-config-server
 systemctl enable ovirt-guest-agent.service
    </command>
 
@@ -104,10 +98,10 @@ systemctl enable ovirt-guest-agent.service
 #systemctl stop firewalld.service
 #systemctl disable firewalld.service
 #yum -y remove firewalld
-sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-mysql --database=neutron -e 'delete from ml2_gre_endpoints;'
-touch /etc/sysconfig/iptables
-echo 'hostname localhost.localdomain' > /etc/sysconfig/network
+#sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+#mysql --database=neutron -e 'delete from ml2_gre_endpoints;'
+#touch /etc/sysconfig/iptables
+#echo 'hostname localhost.localdomain' > /etc/sysconfig/network
    </command>
 
  </commands>

@@ -77,7 +77,7 @@ name=ovirt 3.6
 baseurl=http://192.168.9.60/pulp/repos/ovirt-36/el7/
 gpgcheck=0
 enabled=1
-exclude=ovirt-engine ovirt-engine-appliance ovirt-engine-backend ovirt-engine-dbscripts ovirt-engine-extensions-api-impl ovirt-engine-lib ovirt-engine-restapi ovirt-engine-setup* ovirt-engine-tools* ovirt-engine-userportal* ovirt-engine-vmconsole-proxy-helper ovirt-engine-webadmin-portal* ovirt-engine-websocket-proxy
+exclude=ovirt-engine ovirt-engine-appliance ovirt-engine-backend ovirt-engine-dbscripts ovirt-engine-extensions-api-impl ovirt-engine-lib ovirt-engine-restapi ovirt-engine-setup* ovirt-engine-tools* ovirt-engine-userportal* ovirt-engine-vmconsole-proxy-helper ovirt-engine-webadmin-portal* ovirt-engine-websocket-proxy ovirt-hosted-engine-setup
 
 [ovirt-36-static]
 name=ovirt 3.6 snapshot static

@@ -174,6 +174,6 @@ rm -vf /etc/yum.repos.d/local.repo
 
 rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
 
-# workaround for auto start ovirt-image-proxy service
-chkconfig ovirt-image-proxy on
+# workaround for auto start ovirt-imageio-proxy service
+chkconfig ovirt-imageio-proxy on
 %end

@@ -173,4 +173,7 @@ systemctl enable ovirt-guest-agent.service
 rm -vf /etc/yum.repos.d/local.repo
 
 rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
+
+# workaround for auto start ovirt-image-proxy service
+chkconfig ovirt-image-proxy on
 %end

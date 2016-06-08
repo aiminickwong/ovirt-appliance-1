@@ -1,6 +1,5 @@
 *.iso
 *.img
-*.qcow2
 *.tmp
 Makefile
 .gitignore

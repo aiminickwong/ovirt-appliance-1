@@ -2,3 +2,5 @@
 *.spec
 *.ks
 tmp.repos
+*.img
+vmlinuz

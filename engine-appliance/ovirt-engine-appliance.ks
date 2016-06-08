@@ -175,19 +175,5 @@ rm -vf /etc/yum.repos.d/local.repo
 rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
 
 # workaround for auto start ovirt-imageio-proxy service
-cat > /etc/ovirt-imageio-proxy/ovirt-imageio-proxy.conf <<__EOF__
-[proxy]
-# Listening port
-port = 54323
-
-# Wrap incoming connections with SSL
-use_ssl = true
-
-# Key file for SSL connections
-ssl_key_file = /etc/pki/ovirt-engine/keys/apache.key.nopass
-
-# Certificate file for SSL connections
-ssl_cert_file = /etc/pki/ovirt-engine/certs/apache.cer
-__EOF__
 chkconfig ovirt-imageio-proxy on
 %end

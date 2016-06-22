@@ -95,13 +95,14 @@ systemctl enable ovirt-guest-agent.service
    </command>
 
    <command name='workarounds'>
-#systemctl stop firewalld.service
-#systemctl disable firewalld.service
-#yum -y remove firewalld
-#sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-#mysql --database=neutron -e 'delete from ml2_gre_endpoints;'
-#touch /etc/sysconfig/iptables
-#echo 'hostname localhost.localdomain' > /etc/sysconfig/network
+chkconfig NetworkManager off
+# workaround for bugzilla #1160340
+sed -i 's/# ovs_use_veth = False/ovs_use_veth = True/' /etc/neutron/l3_agent.ini
+rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
+# workaround for hostname inconsistent after reboot: https://bugs.launchpad.net/cloud-init/+bug/1246485
+sed -i 's/self._apply_hostname(hostname)/self._apply_hostname(writeable_hostname)/' /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
+rm -fv /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.pyc
+rm -fv /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.pyo
    </command>
 
  </commands>

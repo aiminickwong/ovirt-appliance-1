@@ -8,21 +8,21 @@
   <rootpw>abc123</rootpw>
 
   <install type='iso'>
-    <iso>http://192.168.2.56/eayunVirt/ISO/CentOS-7-x86_64-Minimal-1503-01.iso</iso>
+    <iso>http://192.168.2.65/3rd-party-ISOs/CentOS-7.0-1406-x86_64-DVD.iso</iso>
   </install>
  </os>
 
  <repositories>
-   <repository name='base-os-1503'>
-     <url>http://192.168.2.65:11080/pulp/repos/centos/7.1.1503/os/x86_64/</url>
-     <signed>no</signed>
-   </repository>
    <repository name='eayunstack-base'>
      <url>http://192.168.2.65/testing/EayunStack/yum-repos/1.0-base/os/x86_64/</url>
      <signed>no</signed>
    </repository>
    <repository name='eayunstack-1.1'>
      <url>http://192.168.2.65/CI-Repos/EayunStack-1.1-release/x86_64/</url>
+     <signed>no</signed>
+   </repository>
+   <repository name='ovirt-36'>
+     <url>http://192.168.9.60/pulp/repos/ovirt-36/el7/</url>
      <signed>no</signed>
    </repository>
    <repository name='eayunos-4.2'>

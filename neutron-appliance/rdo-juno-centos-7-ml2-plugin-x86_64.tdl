@@ -42,6 +42,7 @@ rm -rfv /etc/yum.repos.d/CentOS*
 
    <command name='install-openstack'>
 yum install -y iptables-services
+yum install -y eayunstack-dashboard-theme
 yum install -y openstack-packstack
 
 PACKSTACK_ANSWER_FILE=/root/packstack-answers.txt

@@ -64,14 +64,14 @@ disable_service_installation_by_packstack ()
 set_packstack_configuration_value CONFIG_NEUTRON_FWAAS y
 set_packstack_configuration_value CONFIG_NEUTRON_ML2_TYPE_DRIVERS gre,vlan,flat
 set_packstack_configuration_value CONFIG_NEUTRON_ML2_TENANT_NETWORK_TYPES gre,vlan
-set_packstack_configuration_value CONFIG_NEUTRON_ML2_VLAN_RANGES vmnet:1024:2048
+set_packstack_configuration_value CONFIG_NEUTRON_ML2_VLAN_RANGES vmnet,exnet
 set_packstack_configuration_value CONFIG_NEUTRON_ML2_MECHANISM_DRIVERS openvswitch
 set_packstack_configuration_value CONFIG_NEUTRON_ML2_FLAT_NETWORKS '*'
 set_packstack_configuration_value CONFIG_NEUTRON_OVS_BRIDGE_MAPPINGS exnet:br-ex
 set_packstack_configuration_value CONFIG_NEUTRON_OVS_BRIDGE_IFACES br-ex:eth1
-set_packstack_configuration_value CONFIG_PROVISION_ALL_IN_ONE_OVS_BRIDGE y
 
 set_packstack_configuration_value CONFIG_HORIZON_INSTALL y
+disable_service_installation_by_packstack CONFIG_PROVISION_ALL_IN_ONE_OVS_BRIDGE
 disable_service_installation_by_packstack CONFIG_PROVISION_DEMO
 
 # Disable unneeded services
@@ -103,6 +103,8 @@ rm -vf /etc/sysconfig/network-scripts/ifcfg-e*
 sed -i 's/self._apply_hostname(hostname)/self._apply_hostname(writeable_hostname)/' /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.py
 rm -fv /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.pyc
 rm -fv /usr/lib/python2.7/site-packages/cloudinit/distros/__init__.pyo
+# workaround for multiple external network capability
+sed -i '/^external_network_bridge/c\external_network_bridge =' /etc/neutron/l3_agent.ini
    </command>
 
  </commands>

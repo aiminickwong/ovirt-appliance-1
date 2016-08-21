@@ -107,6 +107,7 @@ yum install -y manage-domains-plugin
 yum install -y engine-vm-backup
 yum install -y iso-uploader-plugin
 yum install -y eayunos-console-manager
+yum install -y virt-viewer-win
 
 #
 echo "Creating a partial answer file"

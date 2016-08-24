@@ -108,6 +108,7 @@ yum install -y engine-vm-backup
 yum install -y iso-uploader-plugin
 yum install -y eayunos-console-manager
 yum install -y virt-viewer-win
+yum install -y ovirt-guest-tools-iso
 
 #
 echo "Creating a partial answer file"
@@ -141,7 +142,7 @@ OVESETUP_DWH_DB/restoreJobs=int:2
 OVESETUP_DWH_DB/securedHostValidation=bool:False
 OVESETUP_DWH_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_ENGINE_CORE/enable=bool:True
-OVESETUP_SYSTEM/nfsConfigEnabled=bool:False
+OVESETUP_SYSTEM/nfsConfigEnabled=bool:True
 OVESETUP_SYSTEM/memCheckEnabled=bool:False
 OVESETUP_CONFIG/applicationMode=str:virt
 OVESETUP_CONFIG/firewallManager=str:firewalld
@@ -149,6 +150,9 @@ OVESETUP_CONFIG/storageType=str:nfs
 OVESETUP_CONFIG/sanWipeAfterDelete=bool:False
 OVESETUP_CONFIG/updateFirewall=bool:True
 OVESETUP_CONFIG/websocketProxyConfig=bool:True
+OVESETUP_CONFIG/isoDomainMountPoint=str:/var/lib/exports/iso
+OVESETUP_CONFIG/isoDomainACL=str:*(rw)
+OVESETUP_CONFIG/isoDomainName=str:ISO_DOMAIN
 OVESETUP_PROVISIONING/postgresProvisioningEnabled=bool:True
 OVESETUP_VMCONSOLE_PROXY_CONFIG/vmconsoleProxyConfig=bool:True
 OVESETUP_APACHE/configureRootRedirection=bool:True

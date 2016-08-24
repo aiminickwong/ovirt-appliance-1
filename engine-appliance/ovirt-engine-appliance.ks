@@ -109,6 +109,7 @@ yum install -y iso-uploader-plugin
 yum install -y eayunos-console-manager
 yum install -y virt-viewer-win
 yum install -y ovirt-guest-tools-iso
+yum install -y squid
 
 #
 echo "Creating a partial answer file"

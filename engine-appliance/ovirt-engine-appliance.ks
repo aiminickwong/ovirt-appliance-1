@@ -93,7 +93,7 @@ enabled=1
 
 [eayunos42]
 name=EayunOS 4.2 repo
-baseurl=http://192.168.2.56/eayunVirt/rpms/EayunOS42/
+baseurl=http://192.168.2.25/eayunVirt/rpms/EayunOS42/
 gpgcheck=0
 enabled=1
 __EOF__

@@ -26,7 +26,7 @@
      <signed>no</signed>
    </repository>
    <repository name='eayunos-4.2'>
-     <url>http://192.168.2.56/eayunVirt/rpms/EayunOS42/</url>
+     <url>http://192.168.2.25/eayunVirt/rpms/EayunOS42/</url>
      <signed>no</signed>
    </repository>
  </repositories>
